@@ -3,10 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <title>なんかアップローダーぽいもの</title>
-  <link rel="stylesheet" type="text/css" href="static/css/main.css">
-  <script type="text/javascript" src="static/js/main.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+  <script type="text/javascript" src="js/main.js"></script>
 </head>
 <body>
-  にゃーん
+  <form action="/upload" method="post" enctype="multipart/form-data">
+    <input type="file" name="file"></input>
+    <button type="submit">アップロード</button>
+  </form>
 </body>
 </html>
