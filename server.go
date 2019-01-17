@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"net/http"
 
+	"io"
+	"os"
+
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 )
@@ -18,6 +21,22 @@ func main() {
 	e.POST("/upload", func(c echo.Context) error {
 		file, err := c.FormFile("file")
 		if err != nil {
+			return err
+		}
+
+		src, err := file.Open()
+		if err != nil {
+			return err
+		}
+		defer src.Close()
+
+		dst, err := os.Create(fmt.Sprintf("files/%s", file.Filename))
+		if err != nil {
+			return err
+		}
+		defer dst.Close()
+
+		if _, err = io.Copy(dst, src); err != nil {
 			return err
 		}
 
