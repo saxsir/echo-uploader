@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"net/http"
+	"path/filepath"
 
 	"io"
 	"os"
@@ -41,6 +43,21 @@ func main() {
 		}
 
 		return c.HTML(http.StatusOK, fmt.Sprintf("<p>File %s uploaded successfully.</p>", file.Filename))
+	})
+
+	e.GET("/files", func(c echo.Context) error {
+		dir := "files"
+		files, err := ioutil.ReadDir(dir)
+		if err != nil {
+			return err
+		}
+
+		var paths []string
+		for _, file := range files {
+			paths = append(paths, filepath.Join(dir, file.Name()))
+		}
+
+		return c.HTML(http.StatusOK, fmt.Sprintf("<p>%s.</p>", paths))
 	})
 
 	e.Logger.Fatal(e.Start(":1323"))
